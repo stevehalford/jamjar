@@ -8,28 +8,24 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 </head>
 <body>
-	<div class="navbar">
-		<div class="navbar-inner">
-			<div class="container">
-	        	<a class="brand" href="#">JamJar</a>
-	    	</div>
-    	</div> 
-	</div>
 	<div class="container">
+		<ul class="appnav">
+			<li class="clients active"><a href="#clients" title="Clients">Clients</a></li>
+			<li class="projects"><a href="#projects" title="Projects">Projects</a></li>
+			<li class="tasks"><a href="#tasks" title="Tasks">Tasks</a></li>
+		</ul>
 			
-			<div class="row">
-				<div class="sidebar span4">
-					<div class="well">
-						<ul class="client-list nav nav-list">
-							<li class="nav-header">Clients</li>
-						</ul>
-					</div>
-				</div>
-				<div class="span8 content">
-					
-				</div>
-			</div>
-			
+
+		<div class="page clients hide">
+			<h2>Clients</h2>
+			<ul class="client-list">
+				
+			</ul>
+		</div>	
+
+		<div class="page clientView hide"></div>	
+
+		<div class="page projects hide"></div>
 	</div>
 
 	<script src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
@@ -38,12 +34,13 @@
 	<script src="js/app.js"></script>  
 
 	<script id="clientListItem" type="text/x-handlebars-template">
-  		<a href="#client/{{id}}" title="{{name}}">{{name}}</a>
+		<div class="well">
+			<h3>{{name}} <small>Client ID #{{id}}</small></h3>
+		</div>
 	</script>
 
 	<script id="clientView" type="text/x-handlebars-template">
-  		<h1>{{name}}</h1>
-  		<h2>Projects</h2>
+		<h1>{{name}} <small>Client ID #{{id}}</small></h1>
   		<ul class="projects-list">
   			
   		</ul>

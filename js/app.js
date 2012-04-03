@@ -6,36 +6,68 @@ var App = {
 
 App.Router = Backbone.Router.extend({
 	routes:{
-		"":"index",
-		"client/:id":"viewClient"
+		"":"allClients",
+		"clients":"allClients",
+		"client/:id":"viewClient",
+		"projects":"allProjects",
+		"tasks":"allTasks"
 	},
 
 	initialize: function() {
-		App.clients = new App.Collections.Clients;
-		App.clientsListView = new App.Views.ClientsList({collection: App.clients});
+
 	},
 
-	index:function () {
-		
+	allClients: function () {
+		$('.page').hide();
+		$('.page.clients').fadeIn();
+		$('.appnav li.clients').addClass('active').siblings('li').removeClass('active');
+	
+		if(!App.clients) App.clients = new App.Collections.Clients;
+		if(!App.clientsListView) App.clientsListView = new App.Views.ClientsList({collection: App.clients});
 	},
 
-	viewClient:function (id) {
+	allProjects: function () {
+		$('.page').hide();
+		$('.page.projects').fadeIn();
+		$('.appnav li.projects').addClass('active').siblings('li').removeClass('active');
 
-		App.clients.deferred.done(function() 
-		{
+		if(!App.projects) App.projects = new App.Collections.Projects;
+		if(!App.projectsListView) App.projectsListView = new App.Views.ProjectsList({collection: App.projects});
+	},
+
+	allTasks: function () {
+		$('.page').hide();
+		$('.page.tasks').fadeIn();
+		$('.appnav li.tasks').addClass('active').siblings('li').removeClass('active');
+
+		if(!App.tasks) App.tasks = new App.Collections.Tasks;
+		if(!App.tasksListView) App.tasksListView = new App.Views.TasksList({collection: App.tasks});
+	},
+
+	viewClient: function (id) {
+		$('.page').hide();
+		$('.page.clientView').fadeIn();
+		$('.appnav li.clients').addClass('active').siblings('li').removeClass('active');
+
+		App.client = new App.Models.Client;
+		App.client.id = id;
+		App.client.fetch({success: function() {
 			if(App.clientView) {
-				App.clientView.model = App.clients.get(id);
+				App.clientView.model = App.client;
 				App.clientView.render();
 			} else {
-				App.clientView = new App.Views.Client({model: App.clients.get(id)});
+				App.clientView = new App.Views.Client({model: App.client});
 				App.clientView.render();
 			}
-		});
+		}});
 	}
+
 });
 
 
-App.Models.Client = Backbone.Model.extend();
+App.Models.Client = Backbone.Model.extend({
+	urlRoot: '/api/clients'
+});
 
 App.Collections.Clients = Backbone.Collection.extend({
 	model: App.Models.Client,
@@ -60,6 +92,19 @@ App.Collections.Projects = Backbone.Collection.extend({
 	}
 });
 
+App.Models.Task = Backbone.Model.extend();
+
+App.Collections.Tasks = Backbone.Collection.extend({
+	model: App.Models.Task,
+	url: function() {
+		if (this.hasOwnProperty('clientRef')) {
+			return '/api/projects/'+this.ProjectRef+'/tasks/';
+		} else {
+			return '/api/tasks/';
+		}
+	}
+});
+
 
 App.Views.ClientsList = Backbone.View.extend({
 	el: '.client-list',
@@ -75,6 +120,7 @@ App.Views.ClientsList = Backbone.View.extend({
 
 	render: function() {
 		var self = this;
+
 		this.collection.each(function(model) {
 			self.addOne(model);
 		});
@@ -108,14 +154,14 @@ App.Views.ClientListItem = Backbone.View.extend({
 	},
 
 	clickClient: function(e) {
-		$('li.client').removeClass('active');
-		$(e.target).parent('li').addClass('active');
+		e.preventDefault();
+		App.router.navigate('#client/'+this.model.id, {trigger: true});
 	}
 });
 
 
 App.Views.Client = Backbone.View.extend({
-	el: '.content',
+	el: '.clientView',
 	initialize: function() {
 		_.bindAll(this, "render");
 
