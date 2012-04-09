@@ -1,6 +1,7 @@
 <?php
 
 require 'Slim/Slim.php';
+include_once 'config.php';
 
 $app = new Slim();
 
@@ -202,11 +203,7 @@ function deleteProject($id) {
 
 
 function getConnection() {
-    $dbhost="localhost";
-    $dbuser="root";
-    $dbpass="root";
-    $dbname="inkuk_jamjar";
-    $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);  
+    $dbh = new PDO("mysql:host=".DBHOST.";dbname=".DBNAME, DBUSER, DBPASS);  
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $dbh;
 }
