@@ -14,6 +14,9 @@
 			<li class="projects"><a href="#projects" title="Projects">Projects</a></li>
 			<li class="tasks"><a href="#tasks" title="Tasks">Tasks</a></li>
 		</ul>
+		<ul class="breadcrumb">
+			<li><a href="#">Home</a> <span class="divider">/</span></li>
+		</ul>
 			
 
 		<div class="page clients hide">
@@ -23,7 +26,9 @@
 			</ul>
 		</div>	
 
-		<div class="page clientView hide"></div>	
+		<div class="page clientView hide">
+			
+		</div>	
 
 		<div class="page projects hide"></div>
 	</div>
@@ -31,7 +36,8 @@
 	<script src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
 	<script src="http://documentcloud.github.com/backbone/backbone-min.js"></script>   
 	<script src="js/handlebars-1.0.0.beta.6.js" type="text/javascript"></script>
-	<script src="js/app.js"></script>  
+
+	<script src="js/app.js"></script>
 
 	<script id="clientListItem" type="text/x-handlebars-template">
 		<div class="well">
@@ -40,12 +46,22 @@
 	</script>
 
 	<script id="clientView" type="text/x-handlebars-template">
-		<h1>{{name}} <small>Client ID #{{id}}</small></h1>
-  		<ul class="projects-list">
-  			
-  		</ul>
+		<div class="row">
+			<div class="span8">
+				<h1>{{name}} <small>Client ID #{{id}}</small></h1>
+			</div>
+			<div class="span4">
+				<div class="well">
+					<h3>Current Projects</h3>
+					<ul class="projects-list nav nav-list">
+						
+					</ul>
+				</div>			
+			</div>
+		</div>
+  		
 	</script>
-	<script id="clientProjectListItem" type="text/x-handlebars-template">
+	<script id="projectListItem" type="text/x-handlebars-template">
 		<a href="#project/{{id}}" title="{{name}}">{{name}}</a>
 	</script>
 </body>

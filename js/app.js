@@ -4,66 +4,9 @@ var App = {
 	 Views : {}
 };
 
-App.Router = Backbone.Router.extend({
-	routes:{
-		"":"allClients",
-		"clients":"allClients",
-		"client/:id":"viewClient",
-		"projects":"allProjects",
-		"tasks":"allTasks"
-	},
-
-	initialize: function() {
-
-	},
-
-	allClients: function () {
-		$('.page').hide();
-		$('.page.clients').fadeIn();
-		$('.appnav li.clients').addClass('active').siblings('li').removeClass('active');
-	
-		if(!App.clients) App.clients = new App.Collections.Clients;
-		if(!App.clientsListView) App.clientsListView = new App.Views.ClientsList({collection: App.clients});
-	},
-
-	allProjects: function () {
-		$('.page').hide();
-		$('.page.projects').fadeIn();
-		$('.appnav li.projects').addClass('active').siblings('li').removeClass('active');
-
-		if(!App.projects) App.projects = new App.Collections.Projects;
-		if(!App.projectsListView) App.projectsListView = new App.Views.ProjectsList({collection: App.projects});
-	},
-
-	allTasks: function () {
-		$('.page').hide();
-		$('.page.tasks').fadeIn();
-		$('.appnav li.tasks').addClass('active').siblings('li').removeClass('active');
-
-		if(!App.tasks) App.tasks = new App.Collections.Tasks;
-		if(!App.tasksListView) App.tasksListView = new App.Views.TasksList({collection: App.tasks});
-	},
-
-	viewClient: function (id) {
-		$('.page').hide();
-		$('.page.clientView').fadeIn();
-		$('.appnav li.clients').addClass('active').siblings('li').removeClass('active');
-
-		App.client = new App.Models.Client;
-		App.client.id = id;
-		App.client.fetch({success: function() {
-			if(App.clientView) {
-				App.clientView.model = App.client;
-				App.clientView.render();
-			} else {
-				App.clientView = new App.Views.Client({model: App.client});
-				App.clientView.render();
-			}
-		}});
-	}
-
-});
-
+/**
+*	Models * Collections
+*/
 
 App.Models.Client = Backbone.Model.extend({
 	urlRoot: '/api/clients'
@@ -79,32 +22,42 @@ App.Collections.Clients = Backbone.Collection.extend({
 	}
 });
 
-App.Models.Project = Backbone.Model.extend();
+
+App.Models.Project = Backbone.Model.extend({
+	urlRoot: '/api/projects'
+});
 
 App.Collections.Projects = Backbone.Collection.extend({
 	model: App.Models.Project,
 	url: function() {
 		if (this.hasOwnProperty('clientRef')) {
-			return '/api/clients/'+this.clientRef+'/projects/';
+			return '/api/clients/'+this.clientRef+'/projects';
 		} else {
-			return '/api/projects/';
+			return '/api/projects';
 		}
 	}
 });
 
-App.Models.Task = Backbone.Model.extend();
+
+App.Models.Task = Backbone.Model.extend({
+	urlRoot: '/api/tasks'
+});
 
 App.Collections.Tasks = Backbone.Collection.extend({
 	model: App.Models.Task,
 	url: function() {
 		if (this.hasOwnProperty('clientRef')) {
-			return '/api/projects/'+this.ProjectRef+'/tasks/';
+			return '/api/projects/'+this.ProjectRef+'/tasks';
 		} else {
-			return '/api/tasks/';
+			return '/api/tasks';
 		}
 	}
 });
 
+
+/**
+*	Views
+*/
 
 App.Views.ClientsList = Backbone.View.extend({
 	el: '.client-list',
@@ -171,11 +124,155 @@ App.Views.Client = Backbone.View.extend({
 	render: function() {
 		var template = Handlebars.compile($('#clientView').html());
 		$(this.el).html(template(this.model.toJSON()));
+
+		//get clients projects
+		clientProjects = new App.Collections.Projects;
+		clientProjects.clientRef = this.model.id;
+
+		App.clientProjectsList = new App.Views.ProjectsList({'collection':clientProjects});
+
+		clientProjects.fetch();
+
 		return this;
 	}
 });
 
+App.Views.ProjectsList = Backbone.View.extend({
+	el: '.projects-list',
+	_viewIds: {},
 
+	initialize: function() {
+		_.bindAll(this, "render");
+
+		this.collection.on('reset',this.render, this);
+		this.collection.on('add',this.addOne, this);
+		this.collection.on('remove',this.removeOne, this);
+	},
+
+	render: function() {
+		var self = this;
+
+		this.collection.each(function(model) {
+			self.addOne(model);
+		});
+	},
+	
+	addOne: function(model) {
+		var view = new App.Views.ProjectListItem({model: model});
+		$(this.el).append(view.render().el);
+
+		this._viewIds[model.cid] = view;
+
+		return this;
+	},
+
+	removeOne: function(model) {
+		this._viewIds[model.cid].remove();
+	}
+});
+
+App.Views.ProjectListItem = Backbone.View.extend({
+	tagName: "li",
+	className: 'project',
+	events: {
+		"click":"clickProject"
+	},
+
+	render: function(){
+		var template = Handlebars.compile($('#projectListItem').html());
+		$(this.el).html(template(this.model.toJSON()));
+		return this;
+	},
+
+	clickProject: function(e) {
+		e.preventDefault();
+		App.router.navigate('#project/'+this.model.id, {trigger: true});
+	}
+});
+
+
+/**
+*	Router
+*/
+
+App.Router = Backbone.Router.extend({
+	routes:{
+		"":"allClients",
+		"clients":"allClients",
+		"client/:id":"viewClient",
+		"projects":"allProjects",
+		"project/:id":"viewProject",
+		"tasks":"allTasks"
+	},
+
+	initialize: function() {
+
+	},
+
+	allClients: function () {
+		$('.page').hide();
+		$('.page.clients').fadeIn();
+		$('.appnav li.clients').addClass('active').siblings('li').removeClass('active');
+	
+		if(!App.clients) App.clients = new App.Collections.Clients;
+		if(!App.clientsListView) App.clientsListView = new App.Views.ClientsList({collection: App.clients});
+	},
+
+	allProjects: function () {
+		$('.page').hide();
+		$('.page.projects').fadeIn();
+		$('.appnav li.projects').addClass('active').siblings('li').removeClass('active');
+
+		if(!App.projects) App.projects = new App.Collections.Projects;
+		if(!App.projectsListView) App.projectsListView = new App.Views.ProjectsList({collection: App.projects});
+	},
+
+	allTasks: function () {
+		$('.page').hide();
+		$('.page.tasks').fadeIn();
+		$('.appnav li.tasks').addClass('active').siblings('li').removeClass('active');
+
+		if(!App.tasks) App.tasks = new App.Collections.Tasks;
+		if(!App.tasksListView) App.tasksListView = new App.Views.TasksList({collection: App.tasks});
+	},
+
+	viewClient: function (id) {
+		$('.page').hide();
+		$('.page.clientView').fadeIn();
+		$('.appnav li.clients').addClass('active').siblings('li').removeClass('active');
+
+		App.client = new App.Models.Client;
+		App.client.id = id;
+		App.client.fetch({success: function() {
+			if(App.clientView) {
+				App.clientView.model = App.client;
+				App.clientView.render();
+			} else {
+				App.clientView = new App.Views.Client({model: App.client});
+				App.clientView.render();
+			}
+		}});
+	},
+
+	viewProject: function (id) {
+		$('.page').hide();
+		$('.page.projectView').fadeIn();
+		$('.appnav li.projects').addClass('active').siblings('li').removeClass('active');
+
+		App.project = new App.Models.Project;
+		App.project.id = id;
+		App.project.fetch({success: function() {
+			if(App.projectView) {
+				App.projectView.model = App.project;
+				App.projectView.render();
+			} else {
+				App.projectView = new App.Views.Project({model: App.project});
+				App.projectView.render();
+			}
+		}});
+	}
+
+});
 
 $(function() {
 	App.router = new App.Router();
