@@ -6,9 +6,9 @@ class Clients_Controller extends Base_Controller {
 
 	public function get_index()
 	{
-		$tmp = array('name'=>'Steve Halford');
+		$clients = Client::all();
 
-		return json_encode($tmp);
+		return eloquent_to_json($clients);
 	}
 
 	public function get_show()
@@ -18,7 +18,13 @@ class Clients_Controller extends Base_Controller {
 
 	public function post_create()
 	{
+		$input = Input::json();
 
+		$client = Client::create(array(
+			'name' => $input->name
+		));
+
+		return json_encode($client);
 	}
 
 	public function put_edit()
