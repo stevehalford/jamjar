@@ -1,2 +1,65 @@
 // Import Bootstrap
 @import "../bootstrap/less/bootstrap.less";
+
+body {
+    background-color:#f0f0f0;
+    color:#555;
+}
+.container {
+    margin: 0 0 0 160px;
+    padding-top:20px;
+}
+.appnav {
+    list-style:none;
+    width:130px;
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    background:#a3a3a3 url(../../img/appnav-bg.png) repeat;
+    margin:0;
+    padding:0;
+    box-shadow:-2px 0 3px #666 inset;
+}
+.appnav li {
+    height:128px;
+    border-top:1px solid #afafaf;
+    border-bottom:1px solid #90908a;
+    margin:0;
+    padding:0;
+    text-align:center;
+    font-size:14px;
+}
+.appnav li.active {
+    background: rgba(0,0,0,0.05) url(../../img/appnav-arrow.png) no-repeat right center;
+
+}
+.appnav li a {
+    display: block;
+    height:53px;
+    padding:75px 0 0;
+    color:#646464;
+    text-shadow: 0 1px #bbb;
+    font-weight:bold;
+}
+.appnav li a:hover {
+    text-decoration:none;
+}
+.appnav li.clients a {
+    background:transparent url(../../img/clients.png) no-repeat 45px 35px;
+}
+.appnav li.projects a {
+    background:transparent url(../../img/projects.png) no-repeat 45px 35px;
+}
+.appnav li.tasks a {
+    background:transparent url(../../img/tasks.png) no-repeat 45px 35px;
+}
+.client-list {
+    padding:0;
+    margin:10px 0 0 0;
+    list-style: none;
+}
+.client-list li .well {
+    padding: 10px 19px;
+    margin-bottom:10px;
+}
