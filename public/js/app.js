@@ -9,7 +9,7 @@ var App = {
 */
 
 App.Models.Client = Backbone.Model.extend({
-	urlRoot: '/api/clients'
+	urlRoot: '/clients'
 });
 
 App.Collections.Clients = Backbone.Collection.extend({
@@ -18,38 +18,38 @@ App.Collections.Clients = Backbone.Collection.extend({
 		this.deferred = this.fetch();
 	},
 	url: function() {
-		return '/api/clients';
+		return '/clients';
 	}
 });
 
 
 App.Models.Project = Backbone.Model.extend({
-	urlRoot: '/api/projects'
+	urlRoot: '/projects'
 });
 
 App.Collections.Projects = Backbone.Collection.extend({
 	model: App.Models.Project,
 	url: function() {
 		if (this.hasOwnProperty('clientRef')) {
-			return '/api/clients/'+this.clientRef+'/projects';
+			return '/clients/'+this.clientRef+'/projects';
 		} else {
-			return '/api/projects';
+			return '/projects';
 		}
 	}
 });
 
 
 App.Models.Task = Backbone.Model.extend({
-	urlRoot: '/api/tasks'
+	urlRoot: '/tasks'
 });
 
 App.Collections.Tasks = Backbone.Collection.extend({
 	model: App.Models.Task,
 	url: function() {
 		if (this.hasOwnProperty('clientRef')) {
-			return '/api/projects/'+this.ProjectRef+'/tasks';
+			return '/projects/'+this.ProjectRef+'/tasks';
 		} else {
-			return '/api/tasks';
+			return '/tasks';
 		}
 	}
 });
