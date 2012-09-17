@@ -1,5 +1,14 @@
 <?php
 
+// client Resource
+Route::get('clients', array( 'as' => 'clients', 'uses' => 'clients@index'));
+Route::get('clients/(:any)', array( 'as' => 'client', 'uses' => 'clients@show'));
+Route::get('clients/new', array( 'as' => 'new_client', 'uses' => 'clients@new'));
+Route::get('clients/(:any)edit', array( 'as' => 'edit_client', 'uses' => 'clients@edit'));
+Route::post('clients', 'clients@create');
+Route::put('clients/(:any)', 'clients@update');
+Route::delete('clients/(:any)', 'clients@destroy');
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
