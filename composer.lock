@@ -1,0 +1,25 @@
+{
+    "hash": "83d66bcfa113b5d607c76449da87ae5f",
+    "packages": [
+        {
+            "name": "laravel/laravel",
+            "version": "master",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/laravel/laravel.git",
+                "reference": "master"
+            },
+            "type": "library",
+            "installation-source": "source",
+            "time": "1347618610"
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": [
+
+    ]
+}
