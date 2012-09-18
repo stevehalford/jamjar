@@ -11,9 +11,11 @@ class Clients_Controller extends Base_Controller {
 		return eloquent_to_json($clients);
 	}
 
-	public function get_show()
+	public function get_show($id)
 	{
+		$client = Client::find($id);
 
+		return eloquent_to_json($client);
 	}
 
 	public function post_create()
@@ -27,9 +29,16 @@ class Clients_Controller extends Base_Controller {
 		return json_encode($client);
 	}
 
-	public function put_edit()
+	public function put_update($id)
 	{
+		$input = Input::json();
 
+		$client = Client::find($id);
+
+		$client->name = $input->name;
+		$client->save();
+
+		return json_encode($client);
 	}
 
 }
