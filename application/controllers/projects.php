@@ -23,7 +23,9 @@ class Projects_Controller extends Base_Controller {
 		$input = Input::json();
 
 		$project = Project::create(array(
-			'name' => $input->name
+			'name' => $input->name,
+			'client_id' => $input->client_id,
+			'completed' => $input->completed
 		));
 
 		return json_encode($project);
@@ -36,6 +38,8 @@ class Projects_Controller extends Base_Controller {
 		$project = Project::find($id);
 
 		$project->name = $input->name;
+		$project->client_id = $input->client_id;
+		$project->completed = $input->completed;
 		$project->save();
 
 		return json_encode($project);
