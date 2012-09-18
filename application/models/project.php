@@ -7,4 +7,10 @@ class Project extends Eloquent
         return $this->belongs_to('Client');
 
     }
+
+    public function jobs() {
+
+        return $this->has_many('Job');
+
+    }
 }

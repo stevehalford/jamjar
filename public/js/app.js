@@ -40,16 +40,16 @@ App.Collections.Projects = Backbone.Collection.extend({
 
 
 App.Models.Task = Backbone.Model.extend({
-	urlRoot: '/tasks'
+	urlRoot: '/jobs'
 });
 
 App.Collections.Tasks = Backbone.Collection.extend({
 	model: App.Models.Task,
 	url: function() {
 		if (this.hasOwnProperty('clientRef')) {
-			return '/projects/'+this.ProjectRef+'/tasks';
+			return '/projects/'+this.ProjectRef+'/jobs';
 		} else {
-			return '/tasks';
+			return '/jobs';
 		}
 	}
 });

@@ -15,9 +15,19 @@ Route::get('projects', array( 'as' => 'projects', 'uses' => 'projects@index'));
 Route::get('projects/(:any)', array( 'as' => 'project', 'uses' => 'projects@show'));
 Route::get('projects/new', array( 'as' => 'new_project', 'uses' => 'projects@new'));
 Route::get('projects/(:any)/edit', array( 'as' => 'edit_project', 'uses' => 'projects@edit'));
+Route::get('projects/(:any)/jobs', array( 'as' => 'project_jobs', 'uses' => 'projects@project_jobs'));
 Route::post('projects', 'projects@create');
 Route::put('projects/(:any)', 'projects@update');
 Route::delete('projects/(:any)', 'projects@destroy');
+
+// job Resource
+Route::get('jobs', array( 'as' => 'jobs', 'uses' => 'jobs@index'));
+Route::get('jobs/(:any)', array( 'as' => 'job', 'uses' => 'jobs@show'));
+Route::get('jobs/new', array( 'as' => 'new_job', 'uses' => 'jobs@new'));
+Route::get('jobs/(:any)/edit', array( 'as' => 'edit_job', 'uses' => 'jobs@edit'));
+Route::post('jobs', 'jobs@create');
+Route::put('jobs/(:any)', 'jobs@update');
+Route::delete('jobs/(:any)', 'jobs@destroy');
 
 /*
 |--------------------------------------------------------------------------
