@@ -1,0 +1,1 @@
+This is the /Users/steve/Dropbox/MAMP/htdocs/subdomains/jamjar/application/views/project/index.blade.php view

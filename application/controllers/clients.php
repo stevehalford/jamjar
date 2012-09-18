@@ -41,4 +41,11 @@ class Clients_Controller extends Base_Controller {
 		return json_encode($client);
 	}
 
+	public function get_client_projects($id) {
+
+		$client_projects = Client::find($id)->projects;
+
+		return eloquent_to_json($client_projects);
+	}
+
 }

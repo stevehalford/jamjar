@@ -5,9 +5,19 @@ Route::get('clients', array( 'as' => 'clients', 'uses' => 'clients@index'));
 Route::get('clients/(:any)', array( 'as' => 'client', 'uses' => 'clients@show'));
 Route::get('clients/new', array( 'as' => 'new_client', 'uses' => 'clients@new'));
 Route::get('clients/(:any)/edit', array( 'as' => 'edit_client', 'uses' => 'clients@edit'));
+Route::get('clients/(:any)/projects', array( 'as' => 'client_projects', 'uses' => 'clients@client_projects'));
 Route::post('clients', 'clients@create');
 Route::put('clients/(:any)', 'clients@update');
 Route::delete('clients/(:any)', 'clients@destroy');
+
+// project Resource
+Route::get('projects', array( 'as' => 'projects', 'uses' => 'projects@index'));
+Route::get('projects/(:any)', array( 'as' => 'project', 'uses' => 'projects@show'));
+Route::get('projects/new', array( 'as' => 'new_project', 'uses' => 'projects@new'));
+Route::get('projects/(:any)/edit', array( 'as' => 'edit_project', 'uses' => 'projects@edit'));
+Route::post('projects', 'projects@create');
+Route::put('projects/(:any)', 'projects@update');
+Route::delete('projects/(:any)', 'projects@destroy');
 
 /*
 |--------------------------------------------------------------------------
