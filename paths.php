@@ -23,7 +23,7 @@
 
 $environments = array(
 
-	'local' => array('http://pqs'),
+	'local' => array('http://jamjar'),
 
 );
 
